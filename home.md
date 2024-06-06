@@ -36,7 +36,7 @@ The following steps will be followed for the activity:
 5. Taking the Reverse Shell
 6. Escalating user privileges and reading the root flag
 
-## Start
+## Start Activity
 
 
 ### 1. Network Scan
