@@ -63,7 +63,7 @@ We explore the target IP in the web browser and see an image and a long string t
 Next, we can check the page source for further clues.  
 
 
-![sorgente](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/images/pagina%2Bsorgente.png)   
+![page+source](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/images/page%2Bsource.png)   
 
 
 From the commented code we notice a clue for a possibility of ***Local File Inclusion Vulnerability***, a vulnerability that allows an attacker to access server files by manipulating paths in HTTP requests.
