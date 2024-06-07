@@ -46,7 +46,7 @@ The first step is to identify the IP of the Kali machine we are working on and o
 - IP Bellatrix Machine &rarr; We execute the command `netdiscover -r 10.0.2.0/24`, that is a tool that can scan and monitor network traffic using ARP requests, and find that the Bellatrix machine is located at the address 10.0.2.14, in fact the MAC address coincides with the one set in the VM
 
 
- ![netdiscover+ifconfig](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/netdiscover%2Bifconfig.png)
+ ![netdiscover+ifconfig](netdiscover%2Bifconfig.png)
 
 
 ### 2. Enumeration
@@ -63,13 +63,13 @@ We explore the target IP in the web browser and see an image and a long string t
 Next, we can check the page source for further clues.  
 
 
-![page+source](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/page%2Bsource.png)   
+![page+source](page%2Bsource.png)   
 
 
 From the commented code we notice a clue for a possibility of ***Local File Inclusion Vulnerability***, a vulnerability that allows an attacker to access server files by manipulating paths in HTTP requests.
 So, let's try to perform LFI in the script *ikilledsiriusblack.php* by including the */etc/passwd* file in the URL.  
 
-![etc-passwd](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/etc-passwd.png)  
+![etc-passwd](etc-passwd.png)  
 
 
 As seen above, the *etc/passwd* file contents are displayed on the browser. This confirms the LFI vulnerability!
@@ -87,7 +87,7 @@ In the next step, we will exploit the LFI Vulnerability to gain further access.
 As we know, the URL is vulnerable to LFI, so we can access any file from the target machine through the vulnerable URL. However, we need to identify ways to access the target machine. One way through which this can be achieved is exploiting LFI Vulnerability by conducting an ***SSH log poisoning attack***. Log poisoning is a very common technique that is used to gain a *reverse shell* with the help of the LFI vulnerability. We will inject several malicious logs into the SSH log file and analyze how the server behaves. First, let us verify whether we can access the SSH log file on the target machine, trying to include the */var/log/auth.log* file in the URL.
 
 
-![auth-log](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/auth-log.png)  
+![auth-log](auth-log.png)  
 
 
 Now that we can access the *auth.log* file, let’s see the working of SSH log poisoning.  
@@ -124,7 +124,7 @@ run
 At this point, if we return to the *auth.log* file, we can see new entries related to attempted SSH authentications; specifically, in the second authentication, the username, which would be `<?php system($_GET['cmd']); ?>`, is not inserted but is replaced with a blank space, so we see `Invalid user   from...`, this is due to the "sanitization" of the username by the server, but the PHP code has still been injected into the log file. In the red boxes where the username should appear, we have included a backdoor and anything we execute will be displayed in the box. In fact if we try, for example, to list the contents of the current folder with the `ls -la` command, the output of the command will be displayed instead of the username.
 
 
-![log-poisoning](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/log-poisoning.png)  
+![log-poisoning](log-poisoning.png)  
 
 
 ### 5. Obtaining Reverse Shell
@@ -156,7 +156,7 @@ Once we have an interactive shell we can list the contents of the current direct
 We find 2 files, so print their contents with `cat` command. 
 
 
-![priv-esc](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/priv-esc.png)  
+![priv-esc](priv-esc.png)  
 
 
 We can notice that:
@@ -170,7 +170,7 @@ With the **nano** editor we create two local files on the Kali Machine:
 
 and run the command `john --wordlist=dict.txt hash`, where *--wordlist* specifies the path to the dictionary file.  
 
-![johntheripper](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/johntheripper.png)
+![johntheripper](johntheripper.png)
 
 We get the password of user *lestrange*.
 
@@ -196,7 +196,7 @@ and so what happens step by step is:
 
 Once we arrive in the scenario where we have a shell open with *root* privileges, we move to the */root* directory, list its contents and print the flag.
 
-![flag](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/flag.png)
+![flag](flag.png)
 
 
 We have gained root access and read *root* flag. This completes the challenge! 
