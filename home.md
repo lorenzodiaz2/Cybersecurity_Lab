@@ -175,7 +175,7 @@ and run the command `john --wordlist=dict.txt hash`, where *--wordlist* specifie
 We get the password of user *lestrange*.
 
 
-> The reason I didn't run *Oflline Guessing* directly in the *netcat* shell is because the `john` command wasn't installed and the *Bellatrix* user doesn't have privileges to install it
+> The reason I didn't run *Oflline Guessing* directly in the *netcat* shell is because the `john` command wasn't installed and the *bellatrix* user doesn't have privileges to install it
 
 
 Now the scenario is that we have the credentials of user *lestrange*.
