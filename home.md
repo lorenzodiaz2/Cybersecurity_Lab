@@ -86,7 +86,7 @@ In the next step, we will exploit the LFI Vulnerability to gain further access.
 
 ### 4. Exploiting LFI Vulnerability
 
-As we know, the URL is vulnerable to LFI, so we can access any file from the target machine through the vulnerable URL. However, we need to identify ways to access the Bellatrix machine. One way through which this can be achieved is exploiting LFI Vulnerability by conducting an ***SSH log poisoning attack***. Log poisoning is a very common technique that is used to gain a *reverse shell* with the help of the LFI vulnerability. We will inject several malicious logs into the SSH log file and analyze how the server behaves. First, let us verify whether we can access the SSH log file on the target machine, trying to include the */var/log/auth.log* file in the URL.
+As we know, the URL is vulnerable to LFI, so we can access any file from the Bellatrix machine through the vulnerable URL. However, we need to identify ways to access the Bellatrix machine. One way through which this can be achieved is exploiting LFI Vulnerability by conducting an ***SSH log poisoning attack***. Log poisoning is a very common technique that is used to gain a *reverse shell* with the help of the LFI vulnerability. We will inject several malicious logs into the SSH log file and analyze how the server behaves. First, let us verify whether we can access the SSH log file on the target machine, trying to include the */var/log/auth.log* file in the URL.
 
 
 ![auth_log](auth_log.png)  
