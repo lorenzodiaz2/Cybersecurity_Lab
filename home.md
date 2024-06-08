@@ -182,17 +182,17 @@ We get the password of user *lestrange*.
 Now the scenario is that we have the credentials of user *lestrange*.  
 So, in the shell obtained with *netcat*, we execute the command `su lestrange`, used to switch from the current user to the *lestrange* user. To figure out what privileges *lestrange* has on the system, we run the command `sudo -l` that list user's privilege or check a specific command, and find that user *lestrange* has permission to run `vim` command from any host and as any user without password request.
 
-We can exploit these privileges by running the command `sudo vim -c ':!/bin/sh'`, obtaining an interactive shell with root privileges, in fact:
+We can exploit these privileges by running the command `sudo vim -c ':!/bin/sh'`, obtaining an interactive shell with *root* privileges, in fact:
 
 - *sudo* allows executing commands with the privileges of another user, *root* by default
 - *vim* is a text editor
 - *-c* followed by *':!/bin/sh'* specifies a command to run after starting *vim*
 
 and so what happens step by step is:
-1. sudo command is run with root privileges
-2. *vim* starts as a text editor with root privileges
+1. sudo command is run with *root* privileges
+2. *vim* starts as a text editor with *root* privileges
 3. Immediately after startup, *vim* runs the command `:!/bin/sh`
-4. `:!/bin/sh` command opens a shell with root privileges
+4. `:!/bin/sh` command opens a shell with *root* privileges
     
 
 Once we arrive in the scenario where we have a shell open with *root* privileges, we move to the */root* directory, list its contents and print the flag.
