@@ -200,7 +200,7 @@ Once we arrive in the scenario where we have a shell open with *root* privileges
 ![flag](flag.png)
 
 
-We have gained root access and read *root* flag. This completes the challenge! 
+We have gained *root* access and read *root* flag. This completes the challenge! 
 
 
 ## Credits
