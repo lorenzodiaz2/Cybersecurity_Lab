@@ -143,7 +143,7 @@ After that we have to execute some code on the Bellatrix Machine to open a conne
  - *-e* followed by */bin/bash* specifies to run the *bin/bash* program as a child process when a connection is established
  - 10.0.2.15 and 1234 are the address and the port to connect to
 
-At this point we are in the scenario in which the Bellatrix Machine has a reverse shell, obtained with *netcat*, connected to our Kali Machine. However, there is a small drawback to this type of shell. That is, the shell is a very plain shell that doesn’t have any prompts or features like bash-completion. Hence, it is required to upgrade to an intelligent reverse shell.   
+At this point we are in the scenario in which the Bellatrix Machine has spawned a reverse shell, obtained with *netcat*, connected to our Kali Machine. However, there is a small drawback to this type of shell. That is, the shell is a very plain shell that doesn’t have any prompts or features like bash-completion. Hence, it is required to upgrade to an intelligent reverse shell.   
 We can use `python3 -c 'import pty;pty.spawn("/bin/bash")'` command, in which:
 - *python3* starts the Python3 interpreter
 - *-c* is a parameter that specifies to execute the Python code provided as a string
