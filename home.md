@@ -1,11 +1,11 @@
 # Cybersecurity Lab
 
-This repository shows the steps performed during the simulation of an attack on Virtual Machines.
+This repository shows the steps performed during the simulation of an attack on virtual machines.
 
 ## Introduction
 
 ### Description
-Bellatrix is ​​a Virtual Machine available on [VulnHub](https://www.vulnhub.com/entry/hogwarts-bellatrix,609/), designed to simulate a vulnerable environment, ideal for performing hacking techniques. The **goal** is to gain *root* access and Catch the Flag by exploiting vulnerabilities in the system.
+Bellatrix is ​​a virtual machine available on [VulnHub](https://www.vulnhub.com/entry/hogwarts-bellatrix,609/), designed to simulate a vulnerable environment, ideal for performing hacking techniques. The **goal** is to gain *root* access and Catch the Flag by exploiting vulnerabilities in the system.
 
 ### Prerequisites
 The following tools and software are needed to simulate the attack:
@@ -13,7 +13,7 @@ The following tools and software are needed to simulate the attack:
   - Kali Linux: virtual machine used as attacker
   - Bellatrix Machine: virtual machine used as target
 - Pentesting tools: netdiscover, nmap, Metasploit
-- Cracking Tools: John the Ripper
+- Cracking tools: John the Ripper
 
 
 ### Threat Model
