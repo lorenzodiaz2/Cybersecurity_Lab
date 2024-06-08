@@ -66,7 +66,9 @@ Next, we can check the page source for further clues.
 ![page_source](page_source.png)   
 
 
-From the commented code we notice a clue for a possibility of ***Local File Inclusion Vulnerability***, a vulnerability that allows an attacker to access server files by manipulating paths in HTTP requests.
+From the commented code we notice a clue for a possibility of ***Local File Inclusion Vulnerability***, a vulnerability that allows an attacker to access server files by manipulating paths in HTTP requests.  
+> See *Alternate Terms* in [CWE-98](https://cwe.mitre.org/data/definitions/98.html)
+
 So, let's try to perform LFI in the script *ikilledsiriusblack.php* by including the */etc/passwd* file in the URL.  
 
 ![etc_passwd](etc_passwd.png)  
