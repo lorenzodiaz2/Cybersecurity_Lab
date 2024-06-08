@@ -154,7 +154,7 @@ We can use `python3 -c 'import pty;pty.spawn("/bin/bash")'` command, in which:
 ### 6. Privilege Escalation
 
 Once we have an interactive shell we can list the contents of the current directory and notice that, in addition to the *.php* and *.gif* files, there is another directory owned by *root*, so we change directory with the `cd` command and list the contents of the folder.  
-We find 2 files, so print their contents with `cat` command. 
+We find 2 files owned by *root*, so print their contents with `cat` command. 
 
 
 ![priv_esc](priv_esc.png)  
