@@ -164,7 +164,7 @@ We can notice that:
 - *.secret.dic* is a dictionary-type file that contains a list of words
 - *Swordofgryffindor* is a file containing *lestrange* and a value that could be obtained by computing the hash of the password of user *lestrange*
 
-so, with the cracking software **John the Ripper** we can try to perform *Password Cracking: Offline Guessing*.  
+so, with the cracking software **John the Ripper** we can try to perform *Brute Force: Password Cracking (Offline Guessing)*.  
 With the **nano** editor we create two local files on the Kali Machine:
 - *hash*: copy of *Swordofgryffindor*
 - *dict.txt*: copy of .secret.dic
