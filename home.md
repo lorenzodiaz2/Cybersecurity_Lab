@@ -179,8 +179,8 @@ We get the password of user *lestrange*.
 > The reason I didn't run *Password Cracking* directly in the shell obtained with *ncat* is because `john` command wasn't installed and *bellatrix* user doesn't have privileges to install it.
 
 
-Now the scenario is that we have the credentials of user *lestrange*.
-Then, in the shell obtained with *netcat*, we execute the command `su lestrange`, used to switch from the current user to the *lestrange* user. To figure out what privileges *lestrange* has on the system, we run the command `sudo -l` that list user's privilege or check a specific command, and find that user *lestrange* has permission to run `vim` command from any host and as any user without password request.
+Now the scenario is that we have the credentials of user *lestrange*.  
+So, in the shell obtained with *netcat*, we execute the command `su lestrange`, used to switch from the current user to the *lestrange* user. To figure out what privileges *lestrange* has on the system, we run the command `sudo -l` that list user's privilege or check a specific command, and find that user *lestrange* has permission to run `vim` command from any host and as any user without password request.
 
 We can exploit these privileges by running the command `sudo vim -c ':!/bin/sh'`, obtaining an interactive shell with root privileges, in fact:
 
