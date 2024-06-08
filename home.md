@@ -34,7 +34,7 @@ The following steps will be followed for the activity:
 3. Exploring HTTP Service
 4. Exploiting LFI vulnerability through SSH Log Poisoning
 5. Taking the Reverse Shell
-6. Escalating user privileges and reading the root flag
+6. Escalating user privileges and reading the *root* flag
 
 ## Start Activity
 
