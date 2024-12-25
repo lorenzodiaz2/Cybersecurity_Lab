@@ -103,7 +103,7 @@ If we try anything related to authentication, the server will log it in *auth.lo
 **Issue**: running the second command, I encounter the following error in the shell of local machine:  
 `remote username contains invalid characters`  
 This error suggests that the SSH client is rejecting the username due to the presence of special characters, which are part of the PHP code I'm trying to inject. So, SSH Log Poisoning is now patched from upstream `ssh`.  
->   For more details of the patch check the function `valid_user()` in this [link](https://github.com/openssh/openssh-portable/commit/7ef3787c84b6b524501211b11a26c742f829af1a).
+>   For more details of the patch check the function `valid_ruser()` in this [link](https://github.com/openssh/openssh-portable/commit/7ef3787c84b6b524501211b11a26c742f829af1a).
 
 We need a workaround!
 
