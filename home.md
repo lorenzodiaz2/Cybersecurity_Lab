@@ -123,7 +123,13 @@ run
 > Note that at this moment we are only interested in ensuring that in the *auth.log* file there are new entries relating to the attempted authentication, to ensure that if we inject some code it will be executed.  
 
 
-At this point, if we return to the *auth.log* file, we can see new entries related to attempted SSH authentications; specifically, in the second authentication, the username, which would be `<?php system($_GET['cmd']); ?>`, is not inserted but is replaced with a blank space, so we see `Invalid user   from...`, this is due to the "sanitization" of the username by the server, but the PHP code has still been injected into the log file. In the red boxes where the username should appear, we have included a backdoor and anything we execute will be displayed in the box. In fact if we try, for example, to list the contents of the current folder with the `ls -la` command, the output of the command will be displayed instead of the username.
+At this point, if we return to the *auth.log* file via the vulnerable PHP page, we see new entries related to attempted SSH authentications. Notably, when injecting the username `<?php system($_GET['cmd']); ?>`, the log file directly saves the malicious PHP code exactly as provided without sanitization at the moment of insertion.
+
+However, when viewing the log file through the PHP script in the browser, sanitization is applied only at rendering time, causing the injected username to visually appear as blank (`Invalid user from...`). This sanitization might initially mislead observers, as the PHP injection is not immediately visible in the web-rendered log.
+
+The presence and successful injection of the PHP code become apparent only after injecting and executing a command. Specifically, if we pass a command (e.g., `cmd=ls -la`) through the URL parameter, the previously hidden PHP code executes the command, clearly showing its output in place of the sanitized username.
+
+Thus, the sanitization performed by the PHP rendering function protects only the visual display of the logs, not the underlying log file itself, which remains vulnerable and exploitable through LFI.
 
 
 ![log_poisoning](log_poisoning.png)  
